@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AfriGamer – Play</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>...</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="..." rel="..." />
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BVKLZNE7DX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BVKLZNE7DX');
+  </script>
+ 
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d0d0d; --surface: #161616; --surface2: #1f1f1f;
+      --border: #2a2a2a; --accent: #f5a623; --text: #f0ede8; --muted: #888;
+      --font-head: 'Syne', sans-serif; --font-body: 'DM Sans', sans-serif; --radius: 12px;
+    }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); min-height: 100vh; }
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(13,13,13,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 1.5rem; height: 60px; display: flex; align-items: center; gap: 1rem; }
+    .logo { font-family: var(--font-head); font-size: 1.4rem; font-weight: 800; text-decoration: none; color: var(--text); }
+    .logo span { color: var(--accent); }
+    .back-btn { display: flex; align-items: center; gap: 0.4rem; color: var(--muted); text-decoration: none; font-size: 0.875rem; padding: 0.4rem 0.75rem; border-radius: 6px; border: 1px solid var(--border); transition: all 0.2s; }
+    .back-btn:hover { color: var(--text); border-color: var(--accent); }
+    .game-layout { max-width: 1100px; margin: 1.5rem auto; padding: 0 1.5rem; display: grid; grid-template-columns: 1fr 280px; gap: 1.5rem; }
+    .player-wrap { background: #000; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .player-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0.6rem 1rem; display: flex; align-items: center; justify-content: space-between; }
+    .player-bar h1 { font-family: var(--font-head); font-size: 1rem; font-weight: 700; }
+    .player-actions { display: flex; gap: 0.5rem; }
+    .icon-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text); width: 34px; height: 34px; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
+    .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .game-frame-container { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; }
+    .loading-screen { position: absolute; inset: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; z-index: 5; transition: opacity 0.4s; }
+    .loading-screen.hidden { opacity: 0; pointer-events: none; }
+    .spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-screen p { color: var(--muted); font-size: 0.875rem; }
+    #gameFrame { width: 100%; height: 100%; border: none; display: block; }
+    .sidebar { display: flex; flex-direction: column; gap: 1rem; }
+    .game-meta { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
+    .game-meta h2 { font-family: var(--font-head); font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .meta-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.75rem 0; }
+    .tag { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 20px; text-transform: capitalize; }
+    .tag.africa { border-color: var(--accent); color: var(--accent); }
+    .game-meta p { color: var(--muted); font-size: 0.875rem; line-height: 1.6; }
+    .related-title { font-family: var(--font-head); font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .related-list { display: flex; flex-direction: column; gap: 0.6rem; }
+    .related-card { display: flex; gap: 0.75rem; align-items: center; text-decoration: none; color: inherit; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem; transition: border-color 0.2s; }
+    .related-card:hover { border-color: var(--accent); }
+    .related-thumb { width: 56px; height: 42px; border-radius: 6px; object-fit: cover; background: var(--surface2); flex-shrink: 0; }
+    .related-info h4 { font-size: 0.85rem; font-weight: 500; margin-bottom: 0.1rem; }
+    .related-info span { font-size: 0.75rem; color: var(--muted); text-transform: capitalize; }
+    .not-found { max-width: 480px; margin: 4rem auto; text-align: center; padding: 0 1.5rem; }
+    .not-found h2 { font-family: var(--font-head); font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .not-found p { color: var(--muted); margin-bottom: 1.5rem; }
+    .not-found a { display: inline-block; background: var(--accent); color: #000; padding: 0.6rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-family: var(--font-head); }
+    @media (max-width: 768px) { .game-layout { grid-template-columns: 1fr; } .sidebar { display: none; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="logo">Afri<span>Gamer</span></a>
+    <a href="index.html" class="back-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Back
+    </a>
+  </nav>
+  <div id="app"></div>
+  <script src="js/games.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const gameId = params.get('id');
+    const game = GAMES.find(g => g.id === gameId);
+    const app = document.getElementById('app');
+    if (!game) {
+      app.innerHTML = `
+        <div class="not-found">
+          <h2>Game not found</h2>
+          <p>This game doesn't exist or may have been removed.</p>
+          <a href="index.html">Back to Home</a>
+        </div>`;
+    } else {
+      document.title = `${game.title} – AfriGamer`;
+      const related = GAMES.filter(g => g.id !== game.id && g.category.some(c => game.category.includes(c))).slice(0, 5);
+      app.innerHTML = `
+        <div class="game-layout">
+          <div>
+            <div class="player-wrap">
+              <div class="player-bar">
+                <h1>${game.title}</h1>
+                <div class="player-actions">
+                  <button class="icon-btn" id="fullscreenBtn" title="Fullscreen">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="game-frame-container" id="frameContainer">
+                <div class="loading-screen" id="loadingScreen">
+                  <div class="spinner"></div>
+                  <p>Loading ${game.title}…</p>
+                </div>
+                <iframe id="gameFrame" src="${game.embedUrl}" allowfullscreen allow="autoplay; fullscreen; gamepad" scrolling="no"></iframe>
+              </div>
+            </div>
+          </div>
+          <div class="sidebar">
+            <div class="game-meta">
+              <h2>${game.title}</h2>
+              <div class="meta-tags">
+                ${game.category.map(c => `<span class="tag">${c}</span>`).join('')}
+                ${game.madeInAfrica ? '<span class="tag africa">🌍 Made in Africa</span>' : ''}
+              </div>
+              <p>${game.description}</p>
+            </div>
+            ${related.length > 0 ? `
+            <div>
+              <div class="related-title">More games you may like</div>
+              <div class="related-list">
+                ${related.map(g => `
+                  <a href="game.html?id=${g.id}" class="related-card">
+                    <img class="related-thumb" src="${g.thumbnail}" alt="${g.title}" onerror="this.src='https://placehold.co/56x42/1f1f1f/888?text=Game'" loading="lazy"/>
+                    <div class="related-info">
+                      <h4>${g.title}</h4>
+                      <span>${g.category[0]}</span>
+                    </div>
+                  </a>`).join('')}
+              </div>
+            </div>` : ''}
+          </div>
+        </div>`;
+      document.getElementById('gameFrame').addEventListener('load', () => {
+        document.getElementById('loadingScreen').classList.add('hidden');
+      });
+      document.getElementById('fullscreenBtn').addEventListener('click', () => {
+        const container = document.getElementById('frameContainer');
+        if (container.requestFullscreen) container.requestFullscreen();
+        else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen();
+      });
+    }
+  </script>
+</body>
+</html>
