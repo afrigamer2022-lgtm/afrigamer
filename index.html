@@ -3,18 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AfriGamer – Play Free Games Online</title>
+  <title>AfriGamer – Play Free Games Online</title><meta name="description" content="Free browser games for African players. Play hundreds of casual games instantly — including titles made by African developers." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
-  <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>...</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="..." rel="..." />
-
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-BVKLZNE7DX"></script>
   <script>
@@ -147,6 +139,7 @@
     let activeCategory = 'all';
     let searchQuery = '';
     function createCard(game) {
+      const isComingSoon = game.status === 'coming-soon' || !game.embedUrl;
       const a = document.createElement('a');
       a.href = `game.html?id=${game.id}`;
       a.className = 'game-card';
@@ -156,7 +149,8 @@
           <div class="play-overlay">
             <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
           </div>
-          ${game.madeInAfrica ? '<div class="africa-badge">🌍 Africa</div>' : ''}
+         ${game.madeInAfrica ? '<div class="africa-badge">🌍 Africa</div>' : ''}
+          ${isComingSoon ? '<div class="coming-soon-badge">Soon</div>' : ''}
         </div>
         <div class="game-info">
           <h3>${game.title}</h3>
